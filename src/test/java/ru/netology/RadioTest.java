@@ -8,9 +8,21 @@ class RadioTest {
     private Radio radio = new Radio();
 
     @Test
-    void shouldSetNumberStationOverRange() {
+    void shouldSetNumberStationOverRangeWithDefault() {
 
         radio.setCurrentNumber(10);
+
+        int expected = 0;
+        int actual = radio.getCurrentNumber();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldSetNumberStationOverRangeWithManualSetting() {
+        Radio radio = new Radio(15);
+
+        radio.setCurrentNumber(15);
 
         int expected = 0;
         int actual = radio.getCurrentNumber();
@@ -51,7 +63,19 @@ class RadioTest {
     }
 
     @Test
-    void shouldNextNumberStationIfCurrentNumberIs9() {
+    void shouldNextNumberStationWithManualSetting() {
+        Radio radio = new Radio(15);
+
+        radio.setCurrentNumber(10);
+        radio.setNextNumberStation();
+        int expected = 11;
+        int actual = radio.getCurrentNumber();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldNextNumberStationIfCurrentNumberIsMaxWithDefault() {
 
         radio.setCurrentNumber(9);
 
@@ -63,12 +87,38 @@ class RadioTest {
     }
 
     @Test
-    void shouldPrevNumberStationIfCurrentNumberIs0() {
+    void shouldNextNumberStationIfCurrentNumberIsMaxWithManualSetting() {
+        Radio radio = new Radio(15);
+
+        radio.setCurrentNumber(14);
+
+        radio.setNextNumberStation();
+        int expected = 0;
+        int actual = radio.getCurrentNumber();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldPrevNumberStationIfCurrentNumberIsMinWithDefault() {
 
         radio.setCurrentNumber(0);
 
         radio.setPrevNumberStation();
         int expected = 9;
+        int actual = radio.getCurrentNumber();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldPrevNumberStationIfCurrentNumberIsMinWithManualSetting() {
+        Radio radio = new Radio(15);
+
+        radio.setCurrentNumber(0);
+
+        radio.setPrevNumberStation();
+        int expected = 14;
         int actual = radio.getCurrentNumber();
 
         assertEquals(expected, actual);
@@ -99,10 +149,10 @@ class RadioTest {
     @Test
     void shouldDecreaseVolume() {
 
-        radio.setCurrentVolume(4);
+        radio.setCurrentVolume(50);
 
         radio.setDecreaseVolume();
-        int expected = 3;
+        int expected = 49;
         int actual = radio.getCurrentVolume();
 
         assertEquals(expected, actual);
@@ -123,7 +173,7 @@ class RadioTest {
     @Test
     void shouldSetVolumeOverRange() {
 
-        radio.setCurrentVolume(11);
+        radio.setCurrentVolume(101);
 
         int expected = 0;
         int actual = radio.getCurrentVolume();
@@ -136,9 +186,9 @@ class RadioTest {
     @Test
     void shouldIncreaseVolumeMoreMax() {
 
-        radio.setCurrentVolume(10);
+        radio.setCurrentVolume(100);
         radio.setIncreaseVolume();
-        int expected = 10;
+        int expected = 100;
         int actual = radio.getCurrentVolume();
 
         assertEquals(expected, actual);
